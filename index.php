@@ -1,12 +1,15 @@
 <?php
 
+namespace Taborg;
+
 if ($_SERVER['QUERY_STRING'] === '') {
     header('Location: /?text=Default+text&separator=left-arrow');
     exit;
 }
 
-class Definitions {
-    static $characters = array(
+class Definitions
+{
+    public static $characters = array(
         'check' => '&#10003;',
         'x' => '&#10008;',
         'ellipsis' => '&#8230;',
@@ -16,7 +19,7 @@ class Definitions {
         'question' => '&#63;',
         'asterisk' => '&#8727;',
     );
-    static $colors = array(
+    public static $colors = array(
         'gray' => array(
             'hex'=>'bebebe',
             'rgb'=>'190, 190, 190',
@@ -43,29 +46,37 @@ class Definitions {
             'invert'=>false,
             )
     );
-    static function getCharacter($par) {
+    public static function getCharacter($par)
+    {
         return self::$characters[$par];
     }
-    static function getCharacterKey($par) {
+    public static function getCharacterKey($par)
+    {
         return $key(self::$characters[$par]);
     }
-    static function getColorHex($par) {
+    public static function getColorHex($par)
+    {
         return self::$colors[$par]['hex'];
     }
-    static function getColorRgb($par) {
+    public static function getColorRgb($par)
+    {
         return self::$colors[$par]['rgb'];
     }
-    static function isColorInvert($par) {
+    public static function isColorInvert($par)
+    {
         return self::$colors[$par]['invert'] ? 'invert' : '';
     }
 }
 
-class QueryParameters {
+class QueryParameters
+{
     public $vars;
-    public function getQueryValues() {
+    public function getQueryValues()
+    {
         return $this->vars;
     }
-    public function __construct($par) {
+    public function __construct($par)
+    {
         $this->vars = $par;
     }
 }
@@ -245,20 +256,20 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
                     <label id="label-select-none" for="select-none">None</label>
                 </li>
                 <?php
-                    foreach(Definitions::$colors as $key=>$colorAttr) {
-                        if($key === $color) {
-                            $isSelected = 'checked="checked"';
-                            $isActiveParent = 'active';
-                        } else {
-                            $isSelected = '';
-                            $isActiveParent = '';
-                        }
-                        echo '<li class="options ' . $isActiveParent . '">';
-                        echo '<input type="radio" id="select-' .
-                                $key . '" name="color" value="' . $key . '" ' . $isSelected . '>';
-                        echo '<label id="label-select-' . $key . '" for="select-' . $key . '" class="' . Definitions::isColorInvert($key)  . '" style="background: rgba(' . Definitions::getColorRgb($key) . ', .7);">' . $key . '</label>';
-                        echo '</li>';
+                foreach (Definitions::$colors as $key => $colorAttr) {
+                    if ($key === $color) {
+                        $isSelected = 'checked="checked"';
+                        $isActiveParent = 'active';
+                    } else {
+                        $isSelected = '';
+                        $isActiveParent = '';
                     }
+                    echo '<li class="options ' . $isActiveParent . '">';
+                    echo '<input type="radio" id="select-' .
+                            $key . '" name="color" value="' . $key . '" ' . $isSelected . '>';
+                    echo '<label id="label-select-' . $key . '" for="select-' . $key . '" class="' . Definitions::isColorInvert($key)  . '" style="background: rgba(' . Definitions::getColorRgb($key) . ', .7);">' . $key . '</label>';
+                    echo '</li>';
+                }
                 ?>
             </ul>
         </fieldset>
@@ -272,27 +283,30 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
             </ul>
             <ul>
                 <?php
-                    foreach(Definitions::$characters as $key=>$char) {
-                        if($separatorKey === $key) {
-                            $isSelected = 'checked="checked"';
-                            $isActiveParent = 'active';
-                        } else {
-                            $isSelected = '';
-                            $isActiveParent = '';
-                        }
-                        echo '<li class="options ' . $isActiveParent . '">';
-                        echo '<input type="radio" id="select-' . $key . '" name="separator" value="' . $key . '" ' . $isSelected . '>';
-                        echo '<label id="label-select-' . $key . '" for="select-' . $key . '">' .
-                                $char . ' (' . $key . ')</label>';
-                        echo '</li>';
+                foreach (Definitions::$characters as $key => $char) {
+                    if ($separatorKey === $key) {
+                        $isSelected = 'checked="checked"';
+                        $isActiveParent = 'active';
+                    } else {
+                        $isSelected = '';
+                        $isActiveParent = '';
                     }
+                    echo '<li class="options ' . $isActiveParent . '">';
+                    echo '<input type="radio" id="select-' . $key .
+                        '" name="separator" value="' . $key . '" ' . $isSelected . '>';
+                    echo '<label id="label-select-' . $key . '" for="select-' . $key . '">' .
+                            $char . ' (' . $key . ')</label>';
+                    echo '</li>';
+                }
                 ?>
             </ul>
         </fieldset>
 
         <input type="submit" class="submit" value="Save settings">
 
-        <!-- <p style="font-family: sans-serif; font-size: 200px; font-weight: bold;"><?php echo $separator . ' ' . $text; ?></p> -->
+        <!-- <p style="font-family: sans-serif; font-size: 200px; font-weight: bold;">
+            <?php echo $separator . ' ' . $text; ?></p>
+        -->
     </form>
 
     <script>
