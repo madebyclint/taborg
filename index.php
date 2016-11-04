@@ -1,6 +1,6 @@
 <?php
 
-if($_SERVER['QUERY_STRING'] === '') {
+if ($_SERVER['QUERY_STRING'] === '') {
     header('Location: /?text=Default+text&separator=left-arrow');
     exit;
 }
@@ -62,26 +62,19 @@ class Definitions {
 
 class QueryParameters {
     public $vars;
-    private function convertToArray($qs) {
-        $pairs = explode('&', $qs);
-        foreach($pairs as $pair) {
-            $val = explode('=', $pair);
-            $this->vars[$val[0]] = $val[1];
-        }
-    }
     public function getQueryValues() {
         return $this->vars;
     }
     public function __construct($par) {
-        $this->convertToArray(strip_tags($par));
+        $this->vars = $par;
     }
 }
 
-$query = new QueryParameters($_SERVER['QUERY_STRING']);
+$query = new QueryParameters($_GET);
 $vals = $query->getQueryValues();
 $separatorKey = isset($vals['separator']) && $vals['separator'] !== '' ? $vals['separator'] : '';
 $separator = isset($separatorKey) && $separatorKey !== '' ? Definitions::getCharacter($vals['separator']) : '';
-$text = isset($vals['text']) && $vals['text'] !== '' ? $vals['text'] : '';
+$text = isset($vals['text']) && $vals['text'] !== '' ? filter_var($vals['text'], FILTER_SANITIZE_STRING) : '';
 $color = isset($vals['color']) && $vals['color'] !== '' ? $vals['color'] : '';
 $colorHex = $color !== '' ? Definitions::getColorHex($color) : '';
 $colorRgb = $color !== '' ? Definitions::getColorRgb($color) : '';
@@ -121,7 +114,7 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
             color: #fff;
             text-shadow:
                 3px 3px 0 #000,
-                -1px -1px 0 #000,  
+                -1px -1px 0 #000,
                 1px -1px 0 #000,
                 -1px 1px 0 #000,
                 1px 1px 0 #000;
@@ -160,18 +153,18 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
                 2px 2px 1px #555,
                 2px 2px 2px #555,
                 3px 3px 0 #555,
-                -1px -1px 0 #555,  
+                -1px -1px 0 #555,
                 1px -1px 0 #555,
                 -1px 1px 0 #555,
                 1px 1px 0 #555;
         }
         .taborg .input-list .options label {
             font-weight: bold;
-            /*text-shadow: 
-                0px 0px 3px #fff, 
-                0px 0px 2px #fff, 
-                0px 0px 1px #fff, 
-                -1px -1px 1px #fff, 
+            /*text-shadow:
+                0px 0px 3px #fff,
+                0px 0px 2px #fff,
+                0px 0px 1px #fff,
+                -1px -1px 1px #fff,
                 0px -1px 1px #fff,
                 -1px 0px 1px #fff,
                 1px 0px 1px #fff,
@@ -179,12 +172,12 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
                 1px 1px 0px #fff;*/
             color: #000;
             /*letter-spacing: .05em;*/
-            /*text-shadow: 
+            /*text-shadow:
                 2px 2px 0 rgba(238, 238, 238, .4),
                 2px 2px 1px rgba(238, 238, 238, .4),
                 2px 2px 2px rgba(238, 238, 238, .4),
                 3px 3px 0 rgba(238, 238, 238, .4),
-                -1px -1px 0 rgba(238, 238, 238, .4),  
+                -1px -1px 0 rgba(238, 238, 238, .4),
                 1px -1px 0 rgba(238, 238, 238, .4),
                 -1px 1px 0 rgba(238, 238, 238, .4),
                 1px 1px 0 rgba(238, 238, 238, .4);*/
@@ -226,12 +219,12 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
             font-size: 24px;
             font-weight: bold;
             border-radius: 5px;
-            text-shadow: 
+            text-shadow:
                 2px 2px 0 #d74300,
                 2px 2px 1px #d74300,
                 2px 2px 2px #d74300,
                 3px 3px 0 #d74300,
-                -1px -1px 0 #d74300,  
+                -1px -1px 0 #d74300,
                 1px -1px 0 #d74300,
                 -1px 1px 0 #d74300,
                 1px 1px 0 #d74300;
@@ -261,7 +254,7 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
                             $isActiveParent = '';
                         }
                         echo '<li class="options ' . $isActiveParent . '">';
-                        echo '<input type="radio" id="select-' . 
+                        echo '<input type="radio" id="select-' .
                                 $key . '" name="color" value="' . $key . '" ' . $isSelected . '>';
                         echo '<label id="label-select-' . $key . '" for="select-' . $key . '" class="' . Definitions::isColorInvert($key)  . '" style="background: rgba(' . Definitions::getColorRgb($key) . ', .7);">' . $key . '</label>';
                         echo '</li>';
@@ -306,7 +299,7 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
         /*=============================
         =            TESTS            =
         =============================*/
-        
+
         var enableTests = (function() {
             var checkQsVal = function(locationSearchString, parameter) {
                 var val = false;
@@ -325,7 +318,7 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
                 console.log('TestsQuoteForm debug', window.TestsQuoteForm);
             }
         })();
-        
+
         /*=====  End of TESTS  ======*/
 
 
@@ -355,12 +348,12 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
             }
         };
         var optionsListener = function() {
-            
+
         };
         checkLoad('colors', optionsListener, 0);
 
-        
-        
+
+
         // document.getElementById('myButton').onclick = function() {
 
         //     var className = ' ' + myButton.className + ' ';
@@ -369,13 +362,13 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
         //         this.className = className.replace(' active ', ' ');
         //     } else {
         //         this.className += ' active';
-        //     }              
+        //     }
         // }
         // document.getElementById('colors').onclick = function() {
         //     alert('yep');
         // }
-        // document.getElementById('colors').querySelector('.options').onclick = function() { 
-        //     alert('bla bla'); 
+        // document.getElementById('colors').querySelector('.options').onclick = function() {
+        //     alert('bla bla');
         // }
     </script>
 </body>
