@@ -1,5 +1,5 @@
 <?php
-
+// Test comment
 namespace Taborg;
 
 if ($_SERVER['QUERY_STRING'] === '') {
