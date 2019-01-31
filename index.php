@@ -100,7 +100,7 @@ $includeInTitle = isset($vals['include-in-title']) && $vals['include-in-title'] 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo ($includeInTitle === 'on' ? $separator . ' ' : ' ') . $text; ?> || Taborg</title>
+    <title><?php echo ($includeInTitle === 'on' ? $separator . ' ' : ' ') . $text; ?></title>
 
     <link rel="shortcut icon" href="/images/<?php echo $separatorKey . ($color !== '' ? '-' . $color : ''); ?>.png" />
 
