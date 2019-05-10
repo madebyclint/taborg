@@ -3,12 +3,16 @@
 import React, { PureComponent } from 'react';
 import injectSheet from 'react-jss';
 import Favicon from 'react-favicon';
-import { RadioList } from './RadioList';
+import { ColorList } from './ColorList';
+import { CharacterList } from './CharacterList';
 
 const styles = {
   button: {
     height: '200px',
     width: '200px',
+  },
+  label: {
+    display: 'block',
   },
   input: {
     border: '1px solid #aaa',
@@ -46,6 +50,9 @@ const styles = {
     backgroundColor: '#eee',
     textAlign: 'center',
   },
+  section: {
+    padding: '1rem 2rem 2rem',
+  }
 };
 
 const definitions = {
@@ -65,11 +72,22 @@ const definitions = {
   },
   colors: {
     none: 'transparent',
-    gray: '#555',
-    yellow: 'yellow',
-    red: 'red',
+    // aqua: 'aqua',
     black: '#888',
-    white: '#fff',
+    // blue: 'blue',
+    // fuchsia: 'fuchsia',
+    gray: 'silver',
+    // green: 'green',
+    // lime: 'lime',
+    // maroon: 'maroon',
+    // navy: 'navy',
+    // olive: 'olive',
+    // purple: 'purple',
+    red: 'red',
+    // silver: 'silver',
+    // teal: 'teal',
+    white: 'white',
+    yellow: 'yellow',
   }
 };
 
@@ -112,7 +130,19 @@ class Home extends PureComponent {
     return output;
   };
 
-  setQuery(queryString, history) {
+  setQuery(query, history) {
+    if (!query) query = this.state.query;
+    let queryString = typeof query === 'string' ? query : '';
+    let queryParts = [];
+    if (typeof query === 'object') {
+      const keys = Object.keys(query);
+      keys.map((key) => {
+        if (this.state.query[key]) {
+          queryParts.push(`${key}=${this.state.query[key]}`);
+        }
+      });
+      queryString = `?${queryParts.join('&')}`;
+    }
     this.props.history.push(queryString);
   };
 
@@ -124,17 +154,29 @@ class Home extends PureComponent {
         text: prevState.query.text,
         character: prevState.query.character,
       }
-    }));
+    }), this.setQuery);
+  };
+
+  handleCharacterButtonClick = (e) => {
+    e.persist()
+    this.setState(prevState => ({
+      query: {
+        color: prevState.query.color,
+        text: prevState.query.text,
+        character: e.target.value,
+      }
+    }), this.setQuery);
   };
 
   handleTextChange = (e) => {
     e.persist()
     this.setState(prevState => ({
       query: {
+        color: prevState.query.color,
         text: e.target.value,
         character: prevState.query.character,
       }
-    }));
+    }), this.setQuery);
   };
 
   componentDidMount() {
@@ -150,26 +192,33 @@ class Home extends PureComponent {
       }
     }
     const { classes } = this.props;
-    document.title = `${definitions.characters[this.state.query.character]} ${this.state.query.text}`;
+    document.title = `${definitions.characters[this.state.query.character]} ${decodeURI(this.state.query.text)}`;
     return (
       <div className={classes.root}>
         <Favicon url={`/images/${this.state.query.character}-${this.state.query.color}.png`} />
         <h1 className={classes.pageTitle} style={backgroundColor(this.state.query.color)}>
           <span className={classes.icon}>
             {definitions.characters[this.state.query.character]}
-          </span> {this.state.query.text}
+          </span> {decodeURI(this.state.query.text)}
         </h1>
-        <input
-          className={classes.input}
-          defaultValue={this.state.query.text}
-          onChange={this.handleTextChange}
-          type="text"
-        />
-        <RadioList data={definitions.colors} onClick={this.handleColorButtonClick} />
-        Current setup is: <br />
-        text: {this.state.query.text}<br />
-        character: {this.state.query.character} ({definitions.characters[this.state.query.character]}) <br />
-        color: {this.state.query.color || 'transparent'}
+        <section className={classes.section}>
+          <label className={classes.label} htmlFor="textInput">Tab Text</label>
+          <input
+            className={classes.input}
+            value={decodeURI(this.state.query.text)}
+            onChange={this.handleTextChange}
+            type="text"
+            id="textInput"
+          />
+        </section>
+        <section className={classes.section}>
+          <label className={classes.label}>Select Color</label>
+          <ColorList data={definitions.colors} onClick={this.handleColorButtonClick} />
+        </section>
+        <section className={classes.section}>
+          <label className={classes.label}>Select Character</label>
+          <CharacterList data={definitions.characters} onClick={this.handleCharacterButtonClick} />
+        </section>
       </div>
     );
   }
