@@ -254,7 +254,6 @@ class Home extends PureComponent {
     return (
       <div className={classes.root}>
         <Favicon url={`/images/${this.state.query.character}-${this.state.query.color}.png`} />
-        <img src={`/images/${this.state.query.character}-${this.state.query.color}.png`} alt="icon" />
         <h1 className={classes.pageTitle} style={backgroundColor(this.state.query.color)}>
           <span className={classes.icon}>
             {definitions.characters[this.state.query.character]}
