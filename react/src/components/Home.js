@@ -73,7 +73,7 @@ const definitions = {
   colors: {
     none: 'transparent',
     // aqua: 'aqua',
-    black: '#888',
+    black: '#575757',
     // blue: 'blue',
     // fuchsia: 'fuchsia',
     gray: 'silver',
@@ -83,7 +83,7 @@ const definitions = {
     // navy: 'navy',
     // olive: 'olive',
     // purple: 'purple',
-    red: 'red',
+    red: '#FD727C',
     // silver: 'silver',
     // teal: 'teal',
     white: 'white',
