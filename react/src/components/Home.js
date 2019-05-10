@@ -31,10 +31,13 @@ const styles = {
     width: '40%',
   },
   pageTitle: {
+    border: '3px solid #333',
+    borderRadius: '40px 40px 0 0',
     color: '#fff',
     fontFamily: 'sans-serif',
-    fontSize: '100px',
-    opacity: '.4',
+    fontSize: '80px',
+    maxWidth: '1000px',
+    opacity: '.8',
     textShadow: [
       [ '3px','3px',0,'#000' ],
       [ '-1px','-1px',0,'#000' ],
@@ -71,23 +74,76 @@ const definitions = {
     asterisk: '∗',
   },
   colors: {
-    none: 'transparent',
-    // aqua: 'aqua',
-    black: '#575757',
-    // blue: 'blue',
-    // fuchsia: 'fuchsia',
-    gray: 'silver',
-    // green: 'green',
-    // lime: 'lime',
-    // maroon: 'maroon',
-    // navy: 'navy',
-    // olive: 'olive',
-    // purple: 'purple',
-    red: '#FD727C',
-    // silver: 'silver',
-    // teal: 'teal',
-    white: 'white',
-    yellow: 'yellow',
+    transparent: {
+      name: 'transparent',
+      textColor: 'dark',
+    },
+    aqua: {
+      name: 'aqua',
+      hexOverride: '#42d4f4',
+      textColor: 'dark',
+    },
+    black: {
+      name: 'black',
+      hexOverride: '#222222',
+      textColor: 'light',
+    },
+    blue: {
+      name: 'blue',
+      hexOverride: '#1A62A8',
+      textColor: 'light',
+    },
+    gray: {
+      name: 'silver',
+      textColor: 'dark',
+    },
+    green: {
+      name: 'green',
+      hexOverride: '#2FA031',
+      textColor: 'light',
+    },
+    lime: {
+      name: 'lime',
+      hexOverride: '#C0ED53',
+      textColor: 'dark',
+    },
+    brick: {
+      name: 'brick',
+      hexOverride: '#B00715',
+      textColor: 'light',
+    },
+    navy: {
+      name: 'navy',
+      textColor: 'light',
+    },
+    olive: {
+      name: 'olive',
+      hexOverride: '#808000',
+      textColor: 'light',
+    },
+    purple: {
+      name: 'purple',
+      textColor: 'light',
+    },
+    red: {
+      name: 'red',
+      hexOverride: '#e6194b',
+      textColor: 'light',
+    },
+    teal: {
+      name: 'teal',
+      hexOverride: '#0B5B59',
+      textColor: 'light',
+    },
+    white: {
+      name: 'white',
+      textColor: 'dark',
+    },
+    yellow: {
+      name: 'yellow',
+      hexOverride: '#ffe119',
+      textColor: 'dark',
+    },
   }
 };
 
@@ -187,8 +243,10 @@ class Home extends PureComponent {
 
   render() {
     function backgroundColor(color) {
+      color = color || 'transparent';
+      const colorValue = definitions.colors[color].hexOverride ? definitions.colors[color].hexOverride : color;
       return {
-        backgroundColor: color,
+        backgroundColor: colorValue,
       }
     }
     const { classes } = this.props;

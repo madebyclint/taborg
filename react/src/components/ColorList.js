@@ -19,18 +19,22 @@ const styles = {
 
 class ColorList extends PureComponent {
   render() {
-    function backgroundColor(color) {
+    function backgroundColor(color, contrastColor) {
       return {
         backgroundColor: color,
+        color: contrastColor === 'dark' ? '#000' : '#fff',
       }
     }
     console.log('Button props', this.props);
     const { data, onClick } = this.props;
     const buttons = [];
     const { classes } = this.props;
+    let colorValue = '';
     forEach(data, (value, key) => {
+      colorValue = value.hexOverride ? value.hexOverride : value.name;
+      console.log('colorValue', colorValue);
       buttons.push(
-        <button className={classes.root} style={backgroundColor(value)} type="button" key={key} onClick={onClick} value={value}>
+        <button className={classes.root} style={backgroundColor(colorValue, value.textColor)} type="button" key={key} onClick={onClick} value={value.name}>
           {key}
         </button>
       );
