@@ -1,15 +1,7 @@
 import React, { PureComponent } from 'react';
 import injectSheet from 'react-jss';
 import forEach from 'lodash/forEach';
-
-const buttonStyles = {
-  border: '1px solid #888',
-  borderRadius: '3px',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  margin: '10px',
-  padding: '1rem 5rem',
-};
+import { styles as buttonStyles } from './Button.styles';
 
 const styles = {
   root: {
@@ -19,13 +11,13 @@ const styles = {
 
 class CharacterList extends PureComponent {
   render() {
-    console.log('Button props', this.props);
-    const { data, onClick } = this.props;
+    // console.log('Button props', this.props);
+    const { current, data, onClick } = this.props;
     const buttons = [];
     const { classes } = this.props;
     forEach(data, (value, key) => {
       buttons.push(
-        <button className={classes.root} type="button" key={key} onClick={onClick} value={key}>
+        <button className={`${classes.root} ${current === key ? 'active' : ''}`} type="button" key={key} onClick={onClick} value={key}>
           {value} ({key})
         </button>
       );

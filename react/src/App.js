@@ -15,11 +15,11 @@ class App extends PureComponent {
     return (
       <Router>
         <div className={classes.root}>
-          <div>
+          {/* <div>
             <Link to="/">
               <button type="button">Home</button>
             </Link>
-          </div>
+          </div> */}
           <div>
             <Route
               exact
