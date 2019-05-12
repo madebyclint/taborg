@@ -16,6 +16,7 @@ export const definitions = {
   colors: {
     transparent: {
       name: 'transparent',
+      hexOverride: 'transparent',
       textColor: 'dark',
     },
     aqua: {
@@ -34,7 +35,8 @@ export const definitions = {
       textColor: 'light',
     },
     gray: {
-      name: 'silver',
+      name: 'gray',
+      hexOverride: '#C0C0C0',
       textColor: 'dark',
     },
     green: {
@@ -54,6 +56,7 @@ export const definitions = {
     },
     navy: {
       name: 'navy',
+      hexOverride: '#020C7E',
       textColor: 'light',
     },
     olive: {
@@ -63,6 +66,7 @@ export const definitions = {
     },
     purple: {
       name: 'purple',
+      hexOverride: '#7F0E7E',
       textColor: 'light',
     },
     red: {
@@ -77,6 +81,7 @@ export const definitions = {
     },
     white: {
       name: 'white',
+      hexOverride: '#fff',
       textColor: 'dark',
     },
     yellow: {

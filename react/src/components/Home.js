@@ -1,12 +1,17 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import injectSheet from 'react-jss';
 import Favicon from 'react-favicon';
+// // import Divider from '@material-ui/core/Divider';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
+import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
 import { ColorList } from './ColorList';
 import { CharacterList } from './CharacterList';
 import { styles } from './Home.styles';
 import { definitions } from '../data/definitions';
+import { withStyles } from '@material-ui/core/styles';
 
 class Home extends PureComponent {
   state = {
@@ -14,11 +19,12 @@ class Home extends PureComponent {
       color: 'transparent',
       text: 'Default',
       character: 'left-arrow',
+      iconTitleToggle: false,
     },
   };
 
   buildQuery(definition) {
-    return `?text=${definition.text}&character=${definition.character}`;
+    return `?text=${definition.text}&character=${definition.character}&color=${definition.color}&iconTitleToggle=${definition.iconTitleToggle}`;
   }
 
   getQuery(location, setQuery = false, history) {
@@ -67,23 +73,27 @@ class Home extends PureComponent {
   };
 
   handleColorButtonClick = (e) => {
+    const value = e.currentTarget.value;
     e.persist()
     this.setState(prevState => ({
       query: {
-        color: e.target.innerText,
+        color: value,
         text: prevState.query.text,
         character: prevState.query.character,
+        iconTitleToggle: prevState.query.iconTitleToggle,
       }
     }), this.setQuery);
   };
 
   handleCharacterButtonClick = (e) => {
+    const value = e.currentTarget.value;
     e.persist()
     this.setState(prevState => ({
       query: {
         color: prevState.query.color,
         text: prevState.query.text,
-        character: e.target.value,
+        character: value,
+        iconTitleToggle: prevState.query.iconTitleToggle,
       }
     }), this.setQuery);
   };
@@ -95,17 +105,31 @@ class Home extends PureComponent {
         color: prevState.query.color,
         text: e.target.value,
         character: prevState.query.character,
+        iconTitleToggle: prevState.query.iconTitleToggle,
       }
     }), this.setQuery);
   };
 
+  handleToggleChange = (e) => {
+    const value = e.currentTarget.checked;
+    this.setState(prevState => ({
+      query: {
+        color: prevState.query.color,
+        text: prevState.query.text,
+        character: prevState.query.character,
+        iconTitleToggle: value,
+      }
+    }), this.setQuery);
+  }
+
   componentDidMount() {
-    console.log('Home props', this.props);
+    // console.log('Home props', this.props);
     const { history, location } = this.props;
     this.getQuery(location, true, history);
   };
 
   render() {
+    const { classes } = this.props;
     function backgroundColor(color) {
       color = color || 'transparent';
       const colorValue = definitions.colors[color].hexOverride ? definitions.colors[color].hexOverride : color;
@@ -113,8 +137,7 @@ class Home extends PureComponent {
         backgroundColor: colorValue,
       }
     }
-    const { classes } = this.props;
-    document.title = `${definitions.characters[this.state.query.character]} ${decodeURI(this.state.query.text)}`;
+    document.title = `${this.state.query.iconTitleToggle ? definitions.characters[this.state.query.character] : ''} ${decodeURI(this.state.query.text)}`;
     return (
       <div className={classes.root}>
         <Favicon url={`/images/${this.state.query.character}-${this.state.query.color}.png`} />
@@ -124,28 +147,46 @@ class Home extends PureComponent {
           </span> {decodeURI(this.state.query.text)}
         </h1>
         <section className={classes.section}>
-          <label className={classes.label} htmlFor="textInput">Tab Text</label>
-          <input
-            className={classes.input}
-            value={decodeURI(this.state.query.text)}
-            onChange={this.handleTextChange}
-            type="text"
-            id="textInput"
-          />
+        <TextField
+          value={decodeURI(this.state.query.text)}
+          onChange={this.handleTextChange}
+          type="text"
+          id="textInput"
+          margin="normal"
+          variant="outlined"
+          label="Text Title"
+          fullWidth
+          style={{ margin: '0 16px', maxWidth: '600px' }}
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={this.state.query.iconTitleToggle ? true : false}
+              onChange={this.handleToggleChange}
+              value="showIconTitle"
+            />
+          }
+          label="Show icon in title"
+        />
+        </section>
+        {/* <Divider variant="middle" /> */}
+        <section className={classes.section}>
+          <FormLabel>Select Color</FormLabel>
+          <div className={classes.listContainer}>
+            <ColorList data={definitions.colors} onClick={this.handleColorButtonClick} current={this.state.query.color} />
+          </div>
         </section>
         <section className={classes.section}>
-          <label className={classes.label}>Select Color</label>
-          <ColorList data={definitions.colors} onClick={this.handleColorButtonClick} current={this.state.query.color} />
-        </section>
-        <section className={classes.section}>
-          <label className={classes.label}>Select Character</label>
-          <CharacterList data={definitions.characters} onClick={this.handleCharacterButtonClick} current={this.state.query.character} />
+          <FormLabel>Select Character</FormLabel>
+          <div className={classes.listContainer}>
+            <CharacterList data={definitions.characters} onClick={this.handleCharacterButtonClick} current={this.state.query.character} />
+          </div>
         </section>
       </div>
     );
   }
 }
 
-Home = injectSheet(styles)(Home);
+Home = withStyles(styles)(Home);
 
 export { Home };

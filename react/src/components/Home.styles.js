@@ -3,24 +3,15 @@ export const styles = {
     height: '200px',
     width: '200px',
   },
-  label: {
-    display: 'block',
-  },
-  input: {
-    border: '1px solid #aaa',
-    borderRadius: '5px',
-    boxShadow: 'inset 1px 1px 3px #ccc',
-    color: '#555',
-    display: 'block',
-    fontSize: '24px',
-    fontStyle: 'italic',
-    fontFamily: 'Georgia, serif',
-    fontWeight: 'bold',
-    height: '3rem',
-    lineHeight: '3rem',
-    margin: '.5rem auto 2rem',
-    textAlign: 'center',
-    width: '40%',
+  listContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    '& > *': {
+      flexGrow: '0',
+      margin: '.5rem',
+      width: '20%',
+    }
   },
   pageTitle: {
     border: '3px solid #333',

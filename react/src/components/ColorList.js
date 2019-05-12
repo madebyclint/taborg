@@ -1,13 +1,9 @@
 import React, { PureComponent } from 'react';
-import injectSheet from 'react-jss';
+import { withStyles } from '@material-ui/core/styles';
 import forEach from 'lodash/forEach';
-import { styles as buttonStyles } from './Button.styles';
-
-const styles = {
-  root: {
-    extend: buttonStyles,
-  }
-};
+import Button from '@material-ui/core/Button';
+import classNames from 'classnames';
+import { styles } from './Button.styles';
 
 class ColorList extends PureComponent {
   render() {
@@ -18,16 +14,23 @@ class ColorList extends PureComponent {
       }
     }
     // console.log('Button props', this.props);
-    const { current, data, onClick } = this.props;
+    const { classes, className, current, data, onClick } = this.props;
     const buttons = [];
-    const { classes } = this.props;
     let colorValue = '';
     forEach(data, (value, key) => {
       colorValue = value.hexOverride ? value.hexOverride : value.name;
       buttons.push(
-        <button className={`${classes.root} ${current === value.name ? 'active' : ''}`} style={backgroundColor(colorValue, value.textColor)} type="button" key={key} onClick={onClick} value={value.name}>
+        <Button
+          className={classNames(classes.root, className, current === value.name ? classes.active : null)}
+          key={key}
+          onClick={onClick}
+          size="large"
+          style={backgroundColor(colorValue, value.textColor)}
+          value={value.name}
+          variant="outlined"
+        >
           {key}
-        </button>
+        </Button>
       );
     });
     return buttons.map(item => {
@@ -36,6 +39,6 @@ class ColorList extends PureComponent {
   }
 }
 
-ColorList = injectSheet(styles)(ColorList);
+ColorList = withStyles(styles)(ColorList);
 
 export { ColorList };

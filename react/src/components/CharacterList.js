@@ -1,25 +1,27 @@
 import React, { PureComponent } from 'react';
-import injectSheet from 'react-jss';
 import forEach from 'lodash/forEach';
-import { styles as buttonStyles } from './Button.styles';
-
-const styles = {
-  root: {
-    extend: buttonStyles,
-  }
-};
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import classNames from 'classnames';
+import { styles } from './Button.styles';
 
 class CharacterList extends PureComponent {
   render() {
     // console.log('Button props', this.props);
-    const { current, data, onClick } = this.props;
+    const { classes, className, current, data, onClick } = this.props;
     const buttons = [];
-    const { classes } = this.props;
     forEach(data, (value, key) => {
       buttons.push(
-        <button className={`${classes.root} ${current === key ? 'active' : ''}`} type="button" key={key} onClick={onClick} value={key}>
+        <Button
+          className={classNames(classes.root, className, current === key ? classes.active : null)}
+          key={key}
+          onClick={onClick}
+          size="large"
+          value={key}
+          variant="outlined"
+        >
           {value} ({key})
-        </button>
+        </Button>
       );
     });
     return buttons.map(item => {
@@ -28,6 +30,6 @@ class CharacterList extends PureComponent {
   }
 }
 
-CharacterList = injectSheet(styles)(CharacterList);
+CharacterList = withStyles(styles)(CharacterList);
 
 export { CharacterList };

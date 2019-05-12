@@ -1,20 +1,14 @@
 import React, { PureComponent } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import injectSheet from 'react-jss';
 import { Home } from './components/Home';
-
-const styles = {
-  root: {
-    
-  },
-};
+import { Page } from './components/Page';
 
 class App extends PureComponent {
   render() {
     const { classes } = this.props;
     return (
       <Router>
-        <div className={classes.root}>
+        <Page>
           {/* <div>
             <Link to="/">
               <button type="button">Home</button>
@@ -27,12 +21,10 @@ class App extends PureComponent {
               render={props => <Home {...props} />}
             />
           </div>
-        </div>
+        </Page>
       </Router>
     );
   }
 }
-
-App = injectSheet(styles)(App);
 
 export { App };
